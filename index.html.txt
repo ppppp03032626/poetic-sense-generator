@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>詩境感知器</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>詩境感知器</h1>
+    <div id="poem"></div>
+
+    <div class="section">
+      <label>色調選擇：</label>
+      <select id="color">
+        <option value="">--請選擇--</option>
+        <option value="淺藍">淺藍</option>
+        <option value="灰白">灰白</option>
+        <option value="蒼綠">蒼綠</option>
+        <option value="煙紫">煙紫</option>
+      </select>
+      <input type="text" id="customColor" placeholder="或自行輸入色調...">
+    </div>
+
+    <div class="section">
+      <label>情緒氛圍：</label>
+      <select id="emotion"></select>
+      <input type="text" id="customEmotion" placeholder="或自行輸入情緒...">
+    </div>
+
+    <div class="section">
+      <label>用一句話描述你的畫面：</label>
+      <input type="text" id="description" placeholder="請輸入...">
+    </div>
+
+    <button id="generateBtn">生成詩境畫面</button>
+    <button id="refreshBtn">換一首詩</button>
+
+    <div id="loading" style="display:none;">生成中，請稍候...</div>
+
+    <div id="result"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
