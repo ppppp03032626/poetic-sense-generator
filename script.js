@@ -46,7 +46,7 @@ function refreshEmotions() {
   });
 }
 
-// 生成按鈕事件
+// 生成按鈕事件（這是重點）
 generateBtn.addEventListener("click", async () => {
   const selectedColor = customColorInput.value || colorSelect.value;
   const selectedEmotion = customEmotionInput.value || emotionSelect.value;
@@ -63,27 +63,17 @@ generateBtn.addEventListener("click", async () => {
   const prompt = `A scene inspired by the poem "${poems[currentPoemIndex].text}", feeling ${selectedEmotion}, under a ${selectedColor} tone. User's interpretation: "${description}". Create a poetic and cinematic visual.`;
 
   try {
-    const openaiKey = import.meta.env.VITE_OPENAI_API_KEY;
-    const stabilityKey = import.meta.env.VITE_STABILITY_API_KEY;
-
-    // 這裡簡化模擬，實際部署會是兩段API：先gpt組Prompt，再丟到Stability
-    const response = await fetch("https://api.stability.ai/v2beta/stable-image/generate/core", {
+    const response = await fetch("/api/generate", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${stabilityKey}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        prompt: prompt,
-        model: "stable-diffusion-xl-beta-v2-2-2",
-        aspect_ratio: "1:1",
-      })
+      body: JSON.stringify({ prompt }),
     });
 
     const data = await response.json();
-    const imageUrl = data.image_url;
-    if (imageUrl) {
-      resultDiv.innerHTML = `<img src="${imageUrl}" alt="生成結果">`;
+    if (data.image_url) {
+      resultDiv.innerHTML = `<img src="${data.image_url}" alt="生成結果">`;
     } else {
       resultDiv.innerHTML = "<p>生成失敗，請稍後再試。</p>";
     }
