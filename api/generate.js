@@ -6,18 +6,20 @@ export default async function handler(req, res) {
   const { prompt } = req.body;
   const stabilityApiKey = process.env.VITE_STABILITY_API_KEY;
 
+  const formData = new FormData();
+  formData.append('prompt', prompt);
+  formData.append('model', 'stable-diffusion-xl-beta-v2-2-2');
+  formData.append('aspect_ratio', '1:1');
+
   try {
     const response = await fetch("https://api.stability.ai/v2beta/stable-image/generate/core", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${stabilityApiKey}`,
-        "Content-Type": "application/json",
+        "Accept": "application/json",
+        // ❗ 不設定 Content-Type，讓瀏覽器自動加上multipart邊界
       },
-      body: JSON.stringify({
-        prompt: prompt,
-        model: "stable-diffusion-xl-beta-v2-2-2",
-        aspect_ratio: "1:1",
-      }),
+      body: formData,
     });
 
     if (!response.ok) {
