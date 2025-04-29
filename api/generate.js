@@ -4,20 +4,16 @@ export default async function handler(req, res) {
   }
 
   const { prompt } = req.body;
-  const stabilityApiKey = process.env.VITE_STABILITY_API_KEY;
 
   try {
-    const response = await fetch("https://api.stability.ai/v2beta/stable-image/generate/core", {
+    const response = await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${stabilityApiKey}`,
+        "Authorization": `Bearer hf_xxx`,  // 如果有 Hugging Face Token，可以換掉，沒有的話刪掉這行
         "Content-Type": "application/json",
-        "Accept": "application/json",
       },
       body: JSON.stringify({
-        prompt: prompt,
-        model: "stable-diffusion-v1-5",  // ← 使用穩定版模型
-        aspect_ratio: "1:1",
+        inputs: prompt,
       }),
     });
 
@@ -26,8 +22,10 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: error });
     }
 
-    const data = await response.json();
-    res.status(200).json({ image_url: data.image_url });
+    const blob = await response.blob();
+    const imageUrl = URL.createObjectURL(blob);
+
+    res.status(200).json({ image_url: imageUrl });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
