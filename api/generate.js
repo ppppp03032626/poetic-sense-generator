@@ -6,19 +6,19 @@ export default async function handler(req, res) {
   const { prompt } = req.body;
   const stabilityApiKey = process.env.VITE_STABILITY_API_KEY;
 
-  const formData = new FormData();
-  formData.append('prompt', prompt);
-  formData.append('model', 'stable-diffusion-v1-5'); // ⚡ 改成穩定出圖版v1-5
-  formData.append('aspect_ratio', '1:1');
-
   try {
     const response = await fetch("https://api.stability.ai/v2beta/stable-image/generate/core", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${stabilityApiKey}`,
+        "Content-Type": "application/json",
         "Accept": "application/json",
       },
-      body: formData,
+      body: JSON.stringify({
+        prompt: prompt,
+        model: "stable-diffusion-v1-5",  // ← 使用穩定版模型
+        aspect_ratio: "1:1",
+      }),
     });
 
     if (!response.ok) {
@@ -33,4 +33,3 @@ export default async function handler(req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
-
