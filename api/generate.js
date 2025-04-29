@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   const formData = new FormData();
   formData.append('prompt', prompt);
-  formData.append('model', 'stable-diffusion-v1-5'); // ⚡ 這裡改成v1-5
+  formData.append('model', 'stable-diffusion-v1-5'); // ⚡ 改成穩定出圖版v1-5
   formData.append('aspect_ratio', '1:1');
 
   try {
@@ -33,3 +33,4 @@ export default async function handler(req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
+
