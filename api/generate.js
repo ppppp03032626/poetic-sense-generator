@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   const formData = new FormData();
   formData.append('prompt', prompt);
-  formData.append('model', 'stable-diffusion-xl-beta-v2-2-2');
+  formData.append('model', 'stable-diffusion-v1-5'); // ⚡ 這裡改成v1-5
   formData.append('aspect_ratio', '1:1');
 
   try {
@@ -17,7 +17,6 @@ export default async function handler(req, res) {
       headers: {
         "Authorization": `Bearer ${stabilityApiKey}`,
         "Accept": "application/json",
-        // ❗ 不設定 Content-Type，讓瀏覽器自動加上multipart邊界
       },
       body: formData,
     });
