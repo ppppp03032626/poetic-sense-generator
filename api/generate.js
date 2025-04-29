@@ -9,7 +9,6 @@ export default async function handler(req, res) {
     const response = await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer hf_xxx`,  // 如果有 Hugging Face Token，可以換掉，沒有的話刪掉這行
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -22,10 +21,10 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: error });
     }
 
-    const blob = await response.blob();
-    const imageUrl = URL.createObjectURL(blob);
+    const arrayBuffer = await response.arrayBuffer();
+    const base64Image = Buffer.from(arrayBuffer).toString('base64');
 
-    res.status(200).json({ image_url: imageUrl });
+    res.status(200).json({ image_url: `data:image/png;base64,${base64Image}` });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
